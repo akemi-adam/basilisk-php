@@ -1,3 +1,0 @@
-<?php
-
-// System config file
