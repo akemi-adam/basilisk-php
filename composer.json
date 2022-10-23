@@ -1,0 +1,19 @@
+{
+    "name": "akemi-adam/basilisk",
+    "description": "A prototype framework for simpler and more agile projects, such as a basilisk.",
+    "autoload": {
+        "psr-4": {
+            "AkemiAdam\\Basilisk\\": "src/",
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Akemi Adam",
+            "email": "90357785+akemi-adam@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.5"
+    }
+}
