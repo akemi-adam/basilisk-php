@@ -2,7 +2,7 @@
 
 namespace AkemiAdam\Basilisk\Exceptions;
 
-class UndefinedProperty extends \Exception
+class UndefinedPropertyException extends \Exception
 {
     public function __construct()
     {

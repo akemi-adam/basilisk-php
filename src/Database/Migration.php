@@ -98,14 +98,12 @@ class Migration
     {
         $row = implode(', ', $attributes);
 
-        $this->uniques = 'UNIQUE (' . $row . ')';
+        $this->uniques = ', UNIQUE (' . $row . ')';
     }
 
     public function run()
     {
-        $this->statement = 'CREATE TABLE IF NOT EXISTS ' . $this->table . ' (' . implode(', ', $this->scope) . ', ' . $this->uniques . ')';
-
-        /* var_dump($this->connection); */
+        $this->statement = 'CREATE TABLE IF NOT EXISTS ' . $this->table . ' (' . implode(', ', $this->scope) . $this->uniques . ')';
 
         $this->connection->exec($this->statement);
     }

@@ -3,6 +3,7 @@
 namespace AkemiAdam\Basilisk\App\Console;
 
 use AkemiAdam\Basilisk\App\Kernel\Console;
+use AkemiAdam\Basilisk\Exceptions\Database\NoMigrationsCreatedException;
 
 class RunningMigration extends Console
 {
@@ -13,10 +14,30 @@ class RunningMigration extends Console
      */
     public function run() : void
     {
+        try {
+
+            $path = root_path() . '/src/Incluides/migrations';
+
+            if (!file_exists($path)) {
+                throw new NoMigrationsCreatedException;
+            }
+
+        } catch (NoMigrationsCreatedException $e) {
+            
+            $this->error($e->getMessage());
+
+            exit();
+            
+        }
+
         $this->newLine();
 
         $this->info('Running migrations...');
-        
-        require_once \database_path() . '/migrations/migrate.php';
+
+        $this->newLine();
+
+        require_once \database_path() . '/database.php';
+
+        $this->newLine();
     }
 }

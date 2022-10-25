@@ -2,11 +2,12 @@
 
 namespace AkemiAdam\Basilisk\App\Console\Make;
 
-use AkemiAdam\Basilisk\App\Kernel\Console;
-use AkemiAdam\Basilisk\Exceptions\UndefinedProperty;
-use AkemiAdam\Basilisk\Exceptions\Command\{
-    MissingArgumentException
+use AkemiAdam\Basilisk\Exceptions\Command\MissingArgumentException;
+use AkemiAdam\Basilisk\Exceptions\UndefinedPropertyException;
+use AkemiAdam\Basilisk\App\Kernel\{
+    Console, Config
 };
+
 
 class MakeMigration extends Console
 {
@@ -52,18 +53,22 @@ class MakeMigration extends Console
         try {
 
             if (!isset($this->content)) {
-                throw new UndefinedProperty;
+                throw new UndefinedPropertyException;
             }
 
             $this->newLine();
 
-            $this->writeFile(\database_path() . '/migrations/' . now() . '_' . $this->args[2], $this->content);
+            $migration = now() . '_' . $this->args[2];
 
-            $this->info($this->args[2] . ' migration created with success!');
+            $this->writeFile(\database_path() . "/migrations/$migration", $this->content);
+
+            defineConfig($migration, 'migrations');
+
+            $this->info("$migration migration created with success!");
 
             $this->newLine();
 
-        } catch (UndefinedProperty $e) {
+        } catch (UndefinedPropertyException $e) {
 
             $this->error($e->getMessage() . ': ' . $this->class() . '::$content');
 

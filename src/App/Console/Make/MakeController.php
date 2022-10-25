@@ -3,7 +3,7 @@
 namespace AkemiAdam\Basilisk\App\Console\Make;
 
 use AkemiAdam\Basilisk\App\Kernel\Console;
-use AkemiAdam\Basilisk\Exceptions\UndefinedProperty;
+use AkemiAdam\Basilisk\Exceptions\UndefinedPropertyException;
 use AkemiAdam\Basilisk\Exceptions\Command\{
     MissingArgumentException
 };
@@ -52,7 +52,7 @@ class MakeController extends Console
         try {
 
             if (!isset($this->content)) {
-                throw new UndefinedProperty;
+                throw new UndefinedPropertyException;
             }
 
             $this->newLine();
@@ -63,7 +63,7 @@ class MakeController extends Console
 
             $this->newLine();
 
-        } catch (UndefinedProperty $e) {
+        } catch (UndefinedPropertyException $e) {
 
             $this->error($e->getMessage() . ': ' . $this->class() . '::$content');
 

@@ -31,16 +31,6 @@ function config_path() : string
 }
 
 /**
- * Returns the connection of database
- * 
- * @return PDO
- */
-function get_connection()
-{
-    return config_path() . '/connection.php';
-}
-
-/**
  * Returns the resource path
  * 
  * @return string
