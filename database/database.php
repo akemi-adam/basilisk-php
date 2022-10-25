@@ -2,11 +2,7 @@
 
 use AkemiAdam\Basilisk\Kernel\Config;
 
-
-
-$object = file_get_contents($path);
-
-$config = unserialize($object);
+$config = decodeSerealization($path);
 
 $migrations = $config->allSettings();
 

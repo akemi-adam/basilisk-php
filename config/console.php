@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
+/* require __DIR__ . '/../vendor/autoload.php'; */
 
 use AkemiAdam\Basilisk\App\Console\{
     RunningMigration, Server
@@ -12,9 +12,7 @@ use AkemiAdam\Basilisk\App\Console\Make\{
 return [
     'server' => Server::class,
     'migrate' => RunningMigration::class,
-    'make' => [
-        'controller' => MakeController::class,
-        'migration' => MakeMigration::class,
-        'model' => MakeModel::class,
-    ]
+    'make:controller' => MakeController::class,
+    'make:migration' => MakeMigration::class,
+    'make:model' => MakeModel::class,
 ];
