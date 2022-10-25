@@ -16,7 +16,7 @@ class RunningMigration extends Console
     {
         try {
 
-            $path = root_path() . '/src/Incluides/migrations';
+            $path = includes_path() . '/migrations';
 
             if (!file_exists($path)) {
                 throw new NoMigrationsCreatedException;

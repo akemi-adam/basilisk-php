@@ -18,7 +18,6 @@ function decodeSerealization(string $path) : mixed
     return $object;
 }
 
-
 /**
  * Serializes the object and saves it to the specified path
  * 
@@ -44,10 +43,10 @@ function encodeSerealization(string $path, mixed $object) : void
  */
 function defineConfig(string $setting, string $file) : void
 {
-    $path = __DIR__ . '/../Incluides/' . $file;
+    $path = includes_path() . '/' . $file;
 
     if (file_exists($path)) {
-        $config = decodeSerealization($paht);
+        $config = decodeSerealization($path);
     } else {
         $config = new Config;
     }
