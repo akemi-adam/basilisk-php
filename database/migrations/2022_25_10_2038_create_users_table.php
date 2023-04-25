@@ -6,5 +6,10 @@ $table = new Migration('users');
 
 $table->id();
 
-$table->run();
+$table->string('first_name');
 
+$table->string('email');
+
+$table->string('password');
+
+$table->run();

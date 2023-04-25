@@ -153,8 +153,6 @@ abstract class Model
     {
         $this->query .= implode(', ', $this->options['where']) . ' ORDER BY ' . $this->options['order']['column'] . ' ' . $this->options['order']['position'];
 
-        var_dump($this->query);
-
         $result = $this->connection->prepare($this->query);
 
         $result->execute();

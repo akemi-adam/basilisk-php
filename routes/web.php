@@ -4,6 +4,10 @@ use AkemiAdam\Basilisk\App\Kernel\Route;
 
 $route = new Route;
 
-$route->get('/', '/dashboard')->name('dashboard', 'get');
+
+$route->get('/', function ()
+{
+    return view('basilisk');
+});
 
 return $route;

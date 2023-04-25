@@ -1,6 +1,7 @@
 <?php
 
 use AkemiAdam\Basilisk\App\Kernel\Route;
+use AkemiAdam\Basilisk\Exceptions\FileNotFoundException;
 
 /**
  * Returns the routes of web.php file
@@ -34,14 +35,21 @@ function route(string $name) : string
  * @param string $path
  * @param string $method
  */
-function view(string $path, array $method) : void
+function view(string $path) : void
 {
-    if (array_key_exists($path, $method)) {
+    $filename = views_path() . '/' . str_replace('.', '/', $path) . '.php';
 
-        include(views_path() . $method[$path] . '.php');
+    try {
 
-        exit;
+        if (!file_exists($filename))
+            throw new FileNotFoundException;
+    
+        include $filename;
+
+    } catch (FileNotFoundException $e) {
+
+        print($e->getMessage());
+
+        exit(1);
     }
-
-    include(views_path() . route('error.404') . '.php');
 }
