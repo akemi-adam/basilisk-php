@@ -24,14 +24,25 @@ class MakeMigration extends Console
 
         try {
 
-            if (!isset($this->args[2])) {
-
+            if (!isset($this->args[2]))
                 throw new MissingArgumentException;
-            }
 
             $name = explode('_', $this->args[2])[1];
 
-            $this->content = "<?php\n\nuse AkemiAdam\Basilisk\Database\Migration;\n\n\$table = new Migration('$name');\n\n\$table->id();\n\n\$table->run();\n\n";
+            $this->content = <<<EOD
+            <?php
+
+            use AkemiAdam\Basilisk\Database\Migration;
+
+            \$table = new Migration('$name');
+
+            \$table->id();
+
+
+
+            \$table->run();
+
+            EOD;
 
         } catch (MissingArgumentException $e) {
 
@@ -52,9 +63,8 @@ class MakeMigration extends Console
     {
         try {
 
-            if (!isset($this->content)) {
+            if (!isset($this->content))
                 throw new UndefinedPropertyException;
-            }
 
             $this->newLine();
 
