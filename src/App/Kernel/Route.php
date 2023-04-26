@@ -4,8 +4,6 @@ namespace AkemiAdam\Basilisk\App\Kernel;
 
 class Route
 {
-    use Base;
-
     protected array $routes;
 
     protected string $currentRoute;

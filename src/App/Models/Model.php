@@ -2,12 +2,8 @@
 
 namespace AkemiAdam\Basilisk\App\Models;
 
-use AkemiAdam\Basilisk\App\Kernel\Base;
-
 abstract class Model
 {
-    use Base;
-
     protected $connection;
 
     protected string $table;
