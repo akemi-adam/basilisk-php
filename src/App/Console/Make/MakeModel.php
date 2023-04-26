@@ -23,16 +23,22 @@ class MakeModel extends Console
 
         try {
 
-            if (!isset($this->args[2])) {
-
+            if (!isset($this->args[2]))
                 throw new MissingArgumentException;
+
+            $this->content = <<<EOD
+            <?php
+
+            namespace App\Models;
+
+            use AkemiAdam\Basilisk\App\Models\Model;
+
+            class {$this->args[2]} extends Model
+            {
+
             }
 
-            $header = "<?php\n\nnamespace App\Models;\n\nuse AkemiAdam\Basilisk\App\Models\Model;\n\n";
-
-            $scope = "class " . $this->args[2] . " extends Model \n{\n\n}";
-
-            $this->content = $header . $scope;
+            EOD;
 
         } catch (MissingArgumentException $e) {
 
@@ -53,9 +59,8 @@ class MakeModel extends Console
     {
         try {
 
-            if (!isset($this->content)) {
+            if (!isset($this->content))
                 throw new UndefinedPropertyException;
-            }
 
             $this->newLine();
 
