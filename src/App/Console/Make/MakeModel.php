@@ -19,35 +19,21 @@ class MakeModel extends Console
      */
     public function __construct(array $args)
     {
-        parent::__construct($args);
+        parent::__construct($args, 3);
 
-        try {
+        $this->content = <<<EOD
+        <?php
 
-            if (!isset($this->args[2]))
-                throw new MissingArgumentException;
+        namespace App\Models;
 
-            $this->content = <<<EOD
-            <?php
+        use AkemiAdam\Basilisk\App\Models\Model;
 
-            namespace App\Models;
-
-            use AkemiAdam\Basilisk\App\Models\Model;
-
-            class {$this->args[2]} extends Model
-            {
-
-            }
-
-            EOD;
-
-        } catch (MissingArgumentException $e) {
-
-            $this->error($e->getMessage());
-
-            exit();
+        class {$this->args[2]} extends Model
+        {
 
         }
 
+        EOD;
     }
 
     /**

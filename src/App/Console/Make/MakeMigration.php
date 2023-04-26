@@ -20,38 +20,24 @@ class MakeMigration extends Console
      */
     public function __construct(array $args)
     {
-        parent::__construct($args);
+        parent::__construct($args, 3);
 
-        try {
+        $table = explode('_', $this->args[2])[1];
 
-            if (!isset($this->args[2]))
-                throw new MissingArgumentException;
+        $this->content = <<<EOD
+        <?php
 
-            $name = explode('_', $this->args[2])[1];
+        use AkemiAdam\Basilisk\Database\Migration;
 
-            $this->content = <<<EOD
-            <?php
+        \$table = new Migration('$table');
 
-            use AkemiAdam\Basilisk\Database\Migration;
-
-            \$table = new Migration('$name');
-
-            \$table->id();
+        \$table->id();
 
 
 
-            \$table->run();
+        \$table->run();
 
-            EOD;
-
-        } catch (MissingArgumentException $e) {
-
-            $this->error($e->getMessage());
-
-            exit();
-
-        }
-
+        EOD;
     }
 
     /**

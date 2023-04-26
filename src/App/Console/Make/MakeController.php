@@ -19,31 +19,25 @@ class MakeController extends Console
      */
     public function __construct(array $args)
     {
-        parent::__construct($args);
+        parent::__construct($args, 3);
 
-        try {
+        $this->content = <<<EOD
+        <?php
 
-            if (!isset($this->args[2])) {
+        namespace App\Controllers;
 
-                throw new MissingArgumentException;
-            }
+        use AkemiAdam\Basilisk\App\Http\Controller;
 
-            $name = $this->args[2];
-
-            $this->content = "<?php\n\nnamespace App\Controllers;\n\nuse AkemiAdam\Basilisk\App\Http\Controller;\n\nclass $name extends Controller\n{\n\n}";
-
-        } catch (MissingArgumentException $e) {
-
-            $this->error($e->getMessage());
-
-            exit();
+        class {$this->args[2]} extends Controller
+        {
 
         }
 
+        EOD;
     }
 
     /**
-     * Creates a new migration file
+     * Creates a new controller
      * 
      * @return void
      */
@@ -51,9 +45,8 @@ class MakeController extends Console
     {
         try {
 
-            if (!isset($this->content)) {
+            if (!isset($this->content))
                 throw new UndefinedPropertyException;
-            }
 
             $this->newLine();
 
@@ -64,9 +57,7 @@ class MakeController extends Console
             $this->newLine();
 
         } catch (UndefinedPropertyException $e) {
-
             $this->error($e->getMessage() . ': ' . $this->class() . '::$content');
-
         }
     }
 }

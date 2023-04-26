@@ -2,16 +2,34 @@
 
 namespace AkemiAdam\Basilisk\App\Kernel;
 
+use AkemiAdam\Basilisk\Exceptions\Command\MissingArgumentException;
+
 abstract class Console
 {
-    use Base;
-
     protected string $content;
 
     protected array $args;
 
-    public function __construct(array $args) {
-        $this->args = $args;
+    protected int $expectedRequiredArgs;
+
+    public function __construct(array $args, int $expectedRequiredArgs = 2)
+    {
+        try {
+    
+            if (count($args) !== $expectedRequiredArgs)
+                throw new MissingArgumentException;
+
+            $this->args = $args;
+
+            $this->expectedRequiredArgs = $expectedRequiredArgs;
+    
+        } catch (MissingArgumentException $e) {
+
+            $this->error($e->getMessage());
+
+            exit();
+
+        }
     }
 
     abstract public function run() : void;
