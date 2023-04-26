@@ -34,6 +34,8 @@ function route(string $name) : string
  * 
  * @param string $path
  * @param string $method
+ * 
+ * @return void
  */
 function view(string $path) : void
 {
