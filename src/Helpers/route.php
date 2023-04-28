@@ -1,6 +1,7 @@
 <?php
 
 use AkemiAdam\Basilisk\Exceptions\FileNotFoundException;
+use AkemiAdam\Basilisk\App\View\ViewSnake;
 use AkemiAdam\Basilisk\App\Kernel\Route;
 
 /**
@@ -37,16 +38,18 @@ function route(string $name) : string
  * 
  * @return void
  */
-function view(string $path) : void
+function view(string $path, array $data = [])
 {
-    $filename = views_path() . '/' . str_replace('.', '/', $path) . '.php';
+    $filename = str_replace('.', '/', $path) . '.html';
 
     try {
 
-        if (!file_exists($filename))
+        if (!file_exists(views_path() . '/' . $filename))
             throw new FileNotFoundException;
 
-        include $filename;
+        $template = new ViewSnake;
+
+        $template->render($filename, $data);
 
     } catch (FileNotFoundException $e) {
 
