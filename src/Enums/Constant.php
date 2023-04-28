@@ -14,6 +14,6 @@ final class Constant
         'route',
         'date',
         'database',
-        'object',
+        'object'
     ];
 }

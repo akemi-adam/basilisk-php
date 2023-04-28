@@ -58,7 +58,7 @@ class MakeMigration extends Console
 
             $this->writeFile(\database_path() . "/migrations/$migration", $this->content);
 
-            defineConfig($migration, 'migrations');
+            Config::addSetting(\database_path() . '/migrations.json', $migration, false);
 
             $this->info("$migration migration created with success!");
 
