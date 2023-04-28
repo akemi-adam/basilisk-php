@@ -52,9 +52,18 @@ class Route
         if (!array_key_exists($path, $this->routes[$verb]))
             return print('Rota não encontrada');
 
-        $controller = $this->routes[$verb][$path];
+        $actions = $this->routes[$verb][$path];
 
-        $controller();
+        if (is_array($actions))
+        {
+            $controller = new $actions[0];
+
+            $controller->{$actions[1]}();
+
+            return;
+        }
+
+        $actions();
     }
 
     public function name() : Route

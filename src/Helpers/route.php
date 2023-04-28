@@ -1,7 +1,7 @@
 <?php
 
-use AkemiAdam\Basilisk\App\Kernel\Route;
 use AkemiAdam\Basilisk\Exceptions\FileNotFoundException;
+use AkemiAdam\Basilisk\App\Kernel\Route;
 
 /**
  * Returns the routes of web.php file
@@ -45,7 +45,7 @@ function view(string $path) : void
 
         if (!file_exists($filename))
             throw new FileNotFoundException;
-    
+
         include $filename;
 
     } catch (FileNotFoundException $e) {

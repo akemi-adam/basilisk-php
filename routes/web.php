@@ -1,6 +1,7 @@
 <?php
 
 use AkemiAdam\Basilisk\App\Kernel\Route;
+use App\Controllers\UserController;
 
 $route = new Route;
 
@@ -14,9 +15,13 @@ $route = new Route;
 | To do this, simply call one of the HTTP verbs (get and post) from the $router object and
 | pass the path and callback as arguments.
 |
-| Example:
+| Examples:
 |
 | $router->get('/', function () => { return view('dashboard'); });
+|
+| Or
+|
+| $router->get('/', [HomepageController::class, 'index']);
 |
 */
 
@@ -24,5 +29,7 @@ $route->get('/', function ()
 {
     return view('basilisk');
 });
+
+
 
 return $route;
