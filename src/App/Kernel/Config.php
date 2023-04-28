@@ -4,49 +4,39 @@ namespace AkemiAdam\Basilisk\App\Kernel;
 
 final class Config
 {
-    private array $settings;
-
-    /**
-     * Initializes the $settings attribute like a array
-     * 
-     * @return void
-     */
-    public function __construct()
+    public static function addSetting(string $settingsPath, string $key, mixed $value) : void
     {
-        $this->settings = array();
+        $json = file_get_contents($settingsPath);
+
+        $settings = json_decode($json, true) ?? [];
+
+        $settings[$key] = $value;
+
+        file_put_contents($settingsPath, json_encode($settings));
     }
 
-    /**
-     * Add a setting to the $settings attribute
-     * 
-     * @param mixed $setting
-     * 
-     * @return void
-     */
-    public function addSetting(mixed $setting) : void
+    public static function getSetting(string $settingsPath, string $key) : mixed
     {
-        $this->settings[] = $setting;
+        $json = file_get_contents($settingsPath);
+
+        $settings = json_decode($json, true);
+
+        return $settings[$key];
     }
 
-    /**
-     * Returns the all settings
-     * 
-     * @return array
-     */
-    public function allSettings() : array
+    public static function allSettings(string $settingsPath)
     {
-        return $this->settings;
+        $json = file_get_contents($settingsPath);
+
+        return json_decode($json, true);
     }
 
-    /**
-     * Returns the a specific setting from the $settings attribute
-     * 
-     * @param mixed $key
-     * 
-     * @return mixed
-     */
-    public function getSetting(mixed $key) : mixed
+    public static function editSetting(string $settingsPath, string $key, mixed $value) : void
     {
-        return $this->settings[$key];
+        $settings = self::allSettings($settingsPath);
+
+        $settings[$key] = $value;
+
+        file_put_contents($settingsPath, json_encode($settings));
     }
 }

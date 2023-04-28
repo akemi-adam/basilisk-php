@@ -69,13 +69,3 @@ function app_path() : string
 {
     return root_path() . '/app';
 }
-
-/**
- * Returns the includes path
- * 
- * @return string
- */
-function includes_path() : string
-{
-    return root_path() . '/incluides';
-}
