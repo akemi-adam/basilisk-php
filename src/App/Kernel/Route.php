@@ -13,6 +13,15 @@ class Route
         $this->routes = ['GET' => [], 'POST' => []];
     }
 
+    /**
+     * Sets a route to the array $this->routes separating by its HTTP verb
+     * 
+     * @param string $path
+     * @param string $verb
+     * @param \Closure|array $controller
+     * 
+     * @return void
+     */
     protected function createRoute(string $path, string $verb, \Closure|array $controller) : void
     {
         $this->routes[$verb] += [$path => $controller];
@@ -20,6 +29,14 @@ class Route
         $this->currentRoute = $path;
     }
 
+    /**
+     * Defines a GET route
+     * 
+     * @param string $path
+     * @param \Closure|array $controller
+     * 
+     * @return Route
+     */
     public function get(string $path, \Closure|array $controller) : Route
     {
         $this->createRoute($path, 'GET', $controller);
@@ -27,6 +44,14 @@ class Route
         return $this;
     }
 
+    /**
+     * Defines a POST route
+     * 
+     * @param string $path
+     * @param \Closure|array $controller
+     * 
+     * @return Route
+     */
     public function post(string $path, \Closure|array $controller)
     {
         $this->createRoute($path, 'POST', $controller);
@@ -34,6 +59,11 @@ class Route
         return $this;
     }
 
+    /**
+     * Checks the route path and the request method to perform an action
+     * 
+     * @return void
+     */
     public function boot() : void
     {
         $path = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
@@ -47,6 +77,12 @@ class Route
             $this->send($path, 'GET');
     }
 
+    /**
+     * Checks if the route exists and if so, whether the action is per controller or per Closure. At the end, it executes the function that acts as a controllator
+     * 
+     * @param string $path
+     * @param string $verb
+     */
     protected function send(string $path, string $verb)
     {
         if (!array_key_exists($path, $this->routes[$verb]))
