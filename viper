@@ -19,10 +19,9 @@ require __DIR__ . '/app.php';
 
 $commands = require __DIR__ . '/config/console.php';
 
-if (array_key_exists($argv[1], $commands)) {
-
+if (array_key_exists($argv[1], $commands))
+{
     $console = new $commands[$argv[1]]($argv);
 
     $console->run();
-
 }

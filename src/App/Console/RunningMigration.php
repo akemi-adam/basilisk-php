@@ -42,7 +42,6 @@ class RunningMigration extends Console
         foreach (Config::allSettings($path) as $migration => $running)
         {
             try {
-                
                 if (!$running)
                 {
                     Config::editSetting($path, $migration, true);
@@ -52,7 +51,7 @@ class RunningMigration extends Console
                     $this->info("$migration run successfully");
                 }
 
-            } catch (\PDO $e) {
+            } catch (\PDOException $e) {
                 $this->error($e->getMessage());
             }
         }

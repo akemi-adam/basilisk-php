@@ -52,7 +52,7 @@ class Route
      * 
      * @return Route
      */
-    public function post(string $path, \Closure|array $controller)
+    public function post(string $path, \Closure|array $controller) : Route
     {
         $this->createRoute($path, 'POST', $controller);
 

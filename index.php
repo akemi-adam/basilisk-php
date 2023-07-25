@@ -2,8 +2,9 @@
 
 require __DIR__ . '/app.php';
 
-use AkemiAdam\Basilisk\App\Kernel\Bootstrap;
-
-$app = new Bootstrap(require_once __DIR__ . '/routes/web.php');
+$app = new AkemiAdam\Basilisk\App\Kernel\Bootstrap(
+    require_once __DIR__ . '/config/services.php',
+    require_once __DIR__ . '/routes/web.php',
+);
 
 $app->boot();

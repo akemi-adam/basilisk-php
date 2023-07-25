@@ -26,13 +26,13 @@ class Migration
 
     }
 
-    protected function setAttribute(string $attribute, string $type, mixed $size)
+    protected function setAttribute(string $attribute, string $type, int|null $size = null) : void
     {
         $row = $attribute . " $type";
 
         is_null($size) ?
             $this->scope[$attribute] = $row :
-            $this->scope[$attribute] = $row . "($size)";
+            $this->scope[$attribute] = "$row($size)";
     }
 
     protected function getAttribute(string $attribute)
@@ -40,58 +40,63 @@ class Migration
         return $this->scope[$attribute];
     }
 
-    public function id(string $attribute = 'id', bool $autoIncrement = true, string $type = 'int', mixed $size = null)
+    protected function setComplements(array $attributes, string $complement) : void
+    {
+        foreach ($attributes as $value)
+            $this->scope[$value] = $this->getAttribute($value) . ' ' . $complement;
+    }
+
+    public function id(string $attribute = 'id', bool $autoIncrement = true, string $type = 'int', mixed $size = null) : void
     {
         $this->setAttribute($attribute, $type, $size);
 
-        $this->scope[$attribute] = $autoIncrement ?
-                $this->getAttribute($attribute) . ' AUTO_INCREMENT PRIMARY KEY' :
-                $this->getAttribute($attribute) . ' PRIMARY KEY';
+        $this->scope[$attribute] = $this->getAttribute($attribute) . ($autoIncrement ? " AUTO_INCREMENT PRIMARY KEY" : " PRIMARY KEY");
     }
 
-    public function string(string $attribute, mixed $size = 255)
+    public function string(string $attribute, mixed $size = 255) : Migration
     {
         $this->setAttribute($attribute, 'VARCHAR', $size);
+
+        return $this;
     }
 
-    public function int(string $attribute, mixed $size = null)
+    public function int(string $attribute, mixed $size = null) : Migration
     {
         $this->setAttribute($attribute, 'INT', $size);
+
+        return $this;
     }
 
-    public function boolean(string $attribute)
+    public function boolean(string $attribute) : Migration
     {
-        $this->setAttribute($attribute, 'BOOLEAN', null);
+        $this->setAttribute($attribute, 'BOOLEAN');
+
+        return $this;
     }
 
-    public function date(string $attribute, )
+    public function date(string $attribute) : Migration
     {
-        $this->setAttribute($attribute, 'DATE', null);
+        $this->setAttribute($attribute, 'DATE');
+
+        return $this;
     }
 
-    public function decimal(string $attribute, mixed $size = null)
+    public function decimal(string $attribute, mixed $size = null) : Migration
     {
         $this->setAttribute($attribute, 'DECIMAL', $size);
-    }
 
-    protected function setComplements(array $attributes, string $complement)
-    {
-        foreach ($attributes as $value) {
-            $this->scope[$value] = $this->getAttribute($value) . ' ' . $complement;
-        }
+        return $this;
     }
 
     public function notNull(array $attributes)
     {
-        
         $this->setComplements($attributes, 'NOT NULL');
     }
 
     public function default(array $attributes)
     {
-        foreach ($attributes as $key => $value) {
+        foreach ($attributes as $key => $value)
             $this->scope[$key] = $this->getAttribute($key) . ' DEFAULT ' . $value;
-        }
     }
 
     public function unique(array $attributes)
@@ -103,7 +108,12 @@ class Migration
 
     public function run()
     {
-        $this->statement = 'CREATE TABLE IF NOT EXISTS ' . $this->table . ' (' . implode(', ', $this->scope) . $this->uniques . ')';
+        $this->statement = sprintf(
+            "CREATE TABLE IF NOT EXISTS %s (%s%s)",
+            $this->table,
+            implode(', ', $this->scope),
+            $this->uniques
+        );
 
         $this->connection->exec($this->statement);
     }
