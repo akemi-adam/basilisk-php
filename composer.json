@@ -16,5 +16,13 @@
     "require": {
         "vlucas/phpdotenv": "^5.5",
         "twig/twig": "^3.5"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.9"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }
