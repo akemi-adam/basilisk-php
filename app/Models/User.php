@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use AkemiAdam\Basilisk\App\Models\Model;
+use AkemiAdam\Basilisk\App\Komodo\Model;
 
 class User extends Model 
 {
-
+    
 }

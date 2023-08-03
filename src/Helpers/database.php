@@ -5,7 +5,7 @@
  * 
  * @return PDO
  */
-function get_connection()
+function get_connection() : \PDO
 {
-    return config_path() . '/connection.php';
+    return require config_path() . '/connection.php';
 }

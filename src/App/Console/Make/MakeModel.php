@@ -26,7 +26,7 @@ class MakeModel extends Console
 
         namespace App\Models;
 
-        use AkemiAdam\Basilisk\App\Models\Model;
+        use AkemiAdam\Basilisk\App\Komodo\Model;
 
         class {$this->args[2]} extends Model
         {

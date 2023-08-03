@@ -13,6 +13,9 @@
 
 // uses(Tests\TestCase::class)->in('Feature');
 
+
+require __DIR__ . '/../app.php';
+
 /*
 |--------------------------------------------------------------------------
 | Expectations
@@ -22,11 +25,35 @@
 | "expect()" function gives you access to a set of "expectations" methods that you can use
 | to assert different things. Of course, you may extend the Expectation API at any time.
 |
-*/
+ */
 
 expect()->extend('toBeOne', function () {
     return $this->toBe(1);
 });
+
+expect()->extend('toBeInDatabase', function (string $table)
+{
+    $connection = \get_connection();
+    
+    $query = "SELECT * FROM $table WHERE ";
+
+    $count = 0;
+
+    foreach ($this->value as $collumn => $value)
+    {
+        $query .=  sprintf("%s %s",  (!$count ? '' : ' AND '), "$collumn = " . (\isString($value)));
+    
+        $count++;
+    }
+
+    $statement = $connection->prepare($query);
+
+    return expect($statement->execute())->toBeTrue();
+});
+
+expect()->extend('toBeModelInDatabase', 
+    fn () => expect(\get_dynamics_properties($this->value))->toBeInDatabase($this->value::getTableName())
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +66,17 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function getInvisibleMethod(string|object $methodOwner, string $name) : ReflectionMethod
 {
-    // ..
+    return (new ReflectionClass($methodOwner))->getMethod($name);
 }
+
+function get_new_user() : App\Models\User
+{
+    return App\Models\User::create([
+        'first_name' => faker()->name(),
+        'email' => faker()->safeEmail(),
+        'password' => password_hash(faker()->word(), PASSWORD_DEFAULT),
+    ]); 
+}
+
