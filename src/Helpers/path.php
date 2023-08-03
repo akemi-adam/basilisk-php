@@ -69,3 +69,13 @@ function app_path() : string
 {
     return root_path() . '/app';
 }
+
+/**
+ * Returns the storage path
+ * 
+ * @return string
+ */
+function storage_path() : string
+{
+    return root_path() . '/storage';
+}

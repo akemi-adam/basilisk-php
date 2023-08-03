@@ -2,6 +2,8 @@
 
 use AkemiAdam\Basilisk\App\Kernel\Route;
 use App\Controllers\UserController;
+use App\Controllers\TestController;
+
 
 $route = new Route;
 
@@ -17,7 +19,7 @@ $route = new Route;
 |
 | Examples:
 |
-| $router->get('/', function () => { return view('dashboard'); });
+| $router->get('/', fn () => view('dashboard'));
 |
 | Or
 |
@@ -27,9 +29,10 @@ $route = new Route;
 
 $route->get('/', function ()
 {
-    return view('basilisk');
+    return view('basilisk', [
+        'name' => 'Akemi Adam',
+    ]);
 });
-
 
 
 return $route;

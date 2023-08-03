@@ -15,7 +15,7 @@
     ],
     "require": {
         "vlucas/phpdotenv": "^5.5",
-        "twig/twig": "^3.5"
+        "fakerphp/faker": "^1.23"
     },
     "require-dev": {
         "pestphp/pest": "^2.9"
