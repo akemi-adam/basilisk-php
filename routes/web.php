@@ -2,7 +2,6 @@
 
 use AkemiAdam\Basilisk\App\Kernel\Route;
 use App\Controllers\UserController;
-use App\Controllers\TestController;
 
 
 $route = new Route;
@@ -27,12 +26,7 @@ $route = new Route;
 |
 */
 
-$route->get('/', function ()
-{
-    return view('basilisk', [
-        'name' => 'Akemi Adam',
-    ]);
-});
+$route->get('/', fn () => view('basilisk', [ 'name' => 'Akemi Adam' ]));
 
 
 return $route;
