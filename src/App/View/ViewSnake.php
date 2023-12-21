@@ -9,9 +9,9 @@ class ViewSnake
 {
     private string $path;
 
-    public function __construct(string $path = '')
+    public function __construct(?string $path = null)
     {
-        $this->path = $path ?: views_path();
+        $this->path = $path ?? views_path();
     }
 
     /**
@@ -22,7 +22,7 @@ class ViewSnake
      * 
      * @return void
      */
-    public function render(string $filename, array $data = [])
+    public function render(string $filename, array $data = []) : void
     {
         foreach ($data as $key => $value) ${$key} = $value;
 
@@ -35,18 +35,17 @@ class ViewSnake
         // Checks if the template exists and if it has been modified
         if ($view = Config::getSetting($configPath, $filename))
         {
-            if (!$this->fileWasModified($originalFile, "$viewPath/$view.php"))
-            {
+            if (!$this->fileWasModified($originalFile, "$viewPath/$view.php")) {
                 include "$viewPath/$view.php";
-
                 exit;
             }
 
             unlink("$viewPath/$view.php");
+
         }
 
         $newFilename = md5($originalFile);
-
+    
         $file = fopen("$viewPath/$newFilename.php", 'w');
 
         Config::addSetting($configPath, $filename, $newFilename);
@@ -56,6 +55,11 @@ class ViewSnake
         fclose($file);
 
         include "$viewPath/$newFilename.php";
+    }
+
+    private function renderLayout(string $filename) : void
+    {
+
     }
 
     /**
@@ -69,8 +73,24 @@ class ViewSnake
     private function fileWasModified(string $originalFile, string $newFile) : bool
     {
         $originalContents = file_get_contents($originalFile);
+
+        $newContents = file_get_contents($newFile);
         
-        $newContents = str_replace(['<?=', '?>'], ['{{', '}}'], file_get_contents($newFile));
+        $newContents = str_replace(['<?=', '?>'], ['{{', '}}'], $newContents);
+
+        if (preg_match('/<!-- extends (.*) -->/', $newContents))
+        {
+            $newContents = preg_replace('/<!-- extends (.*?) -->/', '@extends($1)', $newContents);
+
+            $layout = explode("\n", str_replace(
+                '.', '/', preg_replace('/@extends\((.*?)\)/', '$1', $newContents)
+            ))[0];
+
+            $fileMain = trim($layout) . '.html';
+
+            $this->render($fileMain);
+        }
+
 
         return $originalContents !== $newContents;
     }
@@ -90,8 +110,16 @@ class ViewSnake
             if (preg_match('/{{|}}/', $line))
                 $this->setData($line);
 
+            if (preg_match('/@extends\(.*\)/', $line))
+            {
+                $fileMain = trim(str_replace('.', '/', preg_replace('/@extends\((.*?)\)/', '$1', $line))) . '.html';
+
+                $line = preg_replace('/@extends\((.*?)\)/', '<!-- extends $1 -->', $line);
+            }
+            
             if (preg_match('/@/', $line))
             {
+
                 $this->setBlock('if', $line, function (string &$line) {
                     if (preg_match('/@elseif\(.*\)/', $line)) {
                         $line = preg_replace('/@/', '<?php ', $line);
@@ -130,7 +158,7 @@ class ViewSnake
      * 
      * @return void
      */
-    private function setBlock(string $struct, string &$line, ?\Closure $othersChecks = null)
+    private function setBlock(string $struct, string &$line, ?\Closure $othersChecks = null) : void
     {
         if (preg_match("/@$struct\(.*\)/", $line))
         {
